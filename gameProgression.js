@@ -47,7 +47,7 @@ GameProgression.prototype.checkRecording = function() {
 	var recordingCorrect = false;
 	//check flautist recording against player recording
 	for(n in playerSequence) {
-		if(this.currentSequence[n] && playerSequence[n] == this.currentSequence[n]) {
+		if(this.currentSequence[n] !== undefined && playerSequence[n] == this.currentSequence[n]) {
 			recordingCorrect = true;
 		}
 		else {
@@ -57,7 +57,7 @@ GameProgression.prototype.checkRecording = function() {
 	}
 	//check player recording against flautist recording
 	if(recordingCorrect) for(n in this.currentSequence) {
-		if(playerSequence[n] && playerSequence[n] == this.currentSequence[n]) {
+		if(playerSequence[n] !== undefined && playerSequence[n] == this.currentSequence[n]) {
 			recordingCorrect = true;
 		}
 		else {
