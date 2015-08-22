@@ -12,7 +12,7 @@ function Tentacle(game, x, y, side, note) {
 	this.points = [];
 	if(this.side == 'right') {
 		for(var x = 0; x < 500; x += 50) {
-			this.points.push(new Phaser.Point(x - 100, 0));
+			this.points.push(new Phaser.Point(x + 100, 0));
 		}
 	}
 	else {
@@ -36,6 +36,7 @@ Tentacle.prototype.update = function(active) {
 	    //play sound
 	    if(evilsoundready && !this.prevActive) {
 		    evilsounds[this.note].loopFull();
+		    playerSequence.push(this.note);
 		    console.log('playing note ' + this.note);
 	    }
 	    
