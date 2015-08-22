@@ -17,11 +17,22 @@
 
 var tentacles = [];
 var bubbles;
+var evilsounds;
+var evilsoundready = false;
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
 	game.load.image('tentacle', 'assets/straight tentacle.png');
 	game.load.image('bubble', 'assets/bubble.png');
+	
+	game.load.audio('evil c', 'assets/notes/evil c.mp3');
+    game.load.audio('evil d', 'assets/notes/evil d.mp3');
+    game.load.audio('evil e', 'assets/notes/evil e.mp3');
+    game.load.audio('evil f', 'assets/notes/evil f.mp3');
+    game.load.audio('evil g', 'assets/notes/evil g.mp3');
+    game.load.audio('evil a', 'assets/notes/evil a.mp3');
+    game.load.audio('evil b', 'assets/notes/evil b.mp3');
+    game.load.audio('evil c high', 'assets/notes/evil c high.mp3');
 }
 
 function create() {
@@ -33,17 +44,43 @@ function create() {
 	for(var i = 0; i < 4; i++) {
 		tentacles.push(new Tentacle(game, 600, i * 100 + 100, 'right', i+4));
 	}
+	
+	//create audio
+	evilc = game.add.audio('evil c');
+    evild = game.add.audio('evil d');
+    evile = game.add.audio('evil e');
+    evilf = game.add.audio('evil f');
+    evilg = game.add.audio('evil g');
+    evila = game.add.audio('evil a');
+    evilb = game.add.audio('evil b');
+    evilchigh = game.add.audio('evil c high');
+    
+    evilsounds = [evilc, evild, evile, evilf, evilg, evila, evilb, evilchigh];
+    
+    game.sound.setDecodedCallback(evilsounds, start, this);
+}
+
+function start() {
+	evilsoundready = true;
 }
 
 function update() {
-	if (game.input.keyboard.isDown(Phaser.Keyboard.A)) tentacles[0].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.S)) tentacles[1].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.D)) tentacles[2].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.F)) tentacles[3].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.G)) tentacles[4].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.H)) tentacles[5].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.J)) tentacles[6].update();
-	if (game.input.keyboard.isDown(Phaser.Keyboard.K)) tentacles[7].update();
+	if (game.input.keyboard.isDown(Phaser.Keyboard.A)) tentacles[0].update(true);
+	else tentacles[0].update(false);
+	if (game.input.keyboard.isDown(Phaser.Keyboard.S)) tentacles[1].update(true);
+	else tentacles[1].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.D)) tentacles[2].update(true);
+	else tentacles[2].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.F)) tentacles[3].update(true);
+	else tentacles[3].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.G)) tentacles[4].update(true);
+	else tentacles[4].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.H)) tentacles[5].update(true);
+	else tentacles[5].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.J)) tentacles[6].update(true);
+	else tentacles[6].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.K)) tentacles[7].update(true);
+	else tentacles[7].update(false)
 }
 </script>
 
