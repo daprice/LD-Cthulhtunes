@@ -1,0 +1,153 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Cthulh-tunes - Rip. Mix. Burn away mortal minds.</title>
+    <script src="//cdn.jsdelivr.net/phaser/2.4.2/phaser.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="entities/tentacle.js"></script>
+    <script src="entities/mortal.js"></script>
+    <script src="gameProgression.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var tentacles = [];
+var playerSequence = [];
+var gameProgression;
+var flautist;
+var evilsounds;
+var mortalsounds;
+var evilsoundready = false;
+var mortalsoundready = false;
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+	//from https://github.com/photonstorm/phaser/issues/1355
+	if (game.device.safari || game.device.mobileSafari) {
+	    Phaser.Loader.prototype.transformUrl = function (url) {
+	        return this.baseURL + url + '?cacheBust=' + Date.now();
+	    }
+	}
+	
+	game.load.image('tentacle', 'assets/straight tentacle.png');
+	game.load.image('bubble', 'assets/bubble.png');
+	game.load.image('background', 'assets/background.png');
+	game.load.spritesheet('mortal_flute', 'assets/mortal_flute.png', 90, 146);
+	
+	game.load.audio('evil c', 'assets/notes/evil c.mp3');
+    game.load.audio('evil d', 'assets/notes/evil d.mp3');
+    game.load.audio('evil e', 'assets/notes/evil e.mp3');
+    game.load.audio('evil f', 'assets/notes/evil f.mp3');
+    game.load.audio('evil g', 'assets/notes/evil g.mp3');
+    game.load.audio('evil a', 'assets/notes/evil a.mp3');
+    game.load.audio('evil b', 'assets/notes/evil b.mp3');
+    game.load.audio('evil c high', 'assets/notes/evil c high.mp3');
+	
+	game.load.audio('flute c', 'assets/notes/flute c.mp3');
+    game.load.audio('flute d', 'assets/notes/flute d.mp3');
+    game.load.audio('flute e', 'assets/notes/flute e.mp3');
+    game.load.audio('flute f', 'assets/notes/flute f.mp3');
+    game.load.audio('flute g', 'assets/notes/flute g.mp3');
+    game.load.audio('flute a', 'assets/notes/flute a.mp3');
+    game.load.audio('flute b', 'assets/notes/flute b.mp3');
+    game.load.audio('flute c high', 'assets/notes/flute c high.mp3');
+}
+
+function create() {
+	game.add.sprite(0, 0, 'background');
+	
+	//create left side tentacles
+	for(var i = 0; i < 4; i++) {
+		tentacles.push(new Tentacle(game, 0, i * 100 + 100, 'left', i));
+	}
+	//create right side tentacles
+	for(var i = 0; i < 4; i++) {
+		tentacles.push(new Tentacle(game, 800, i * 100 + 100, 'right', i+4));
+	}
+	
+	//create mortal
+	flautist = new Mortal(game, 455, -200, 'flute');
+	//flautist.walkTo(455, 300);
+	
+	gameProgression = new GameProgression(game);
+	
+	//create audio
+	evilc = game.add.audio('evil c');
+    evild = game.add.audio('evil d');
+    evile = game.add.audio('evil e');
+    evilf = game.add.audio('evil f');
+    evilg = game.add.audio('evil g');
+    evila = game.add.audio('evil a');
+    evilb = game.add.audio('evil b');
+    evilchigh = game.add.audio('evil c high');
+    
+    evilsounds = [evilc, evild, evile, evilf, evilg, evila, evilb, evilchigh];
+    
+    game.sound.setDecodedCallback(evilsounds, startEvil, this);
+    
+	flutec = game.add.audio('flute c');
+    fluted = game.add.audio('flute d');
+    flutee = game.add.audio('flute e');
+    flutef = game.add.audio('flute f');
+    fluteg = game.add.audio('flute g');
+    flutea = game.add.audio('flute a');
+    fluteb = game.add.audio('flute b');
+    flutechigh = game.add.audio('flute c high');
+    
+    mortalsounds = [flutec, fluted, flutee, flutef, fluteg, flutea, fluteb, flutechigh];
+    
+    game.sound.setDecodedCallback(mortalsounds, startMortal, this);
+}
+
+function startEvil() {
+	evilsoundready = true;
+		if(mortalsoundready)
+			gameProgression.beginLevel(false);
+}
+
+function startMortal() {
+	mortalsoundready = true;
+	
+	if(evilsoundready)
+		gameProgression.beginLevel(false);
+}
+
+function update() {
+	if (game.input.keyboard.isDown(Phaser.Keyboard.A)) tentacles[0].update(true);
+	else tentacles[0].update(false);
+	if (game.input.keyboard.isDown(Phaser.Keyboard.S)) tentacles[1].update(true);
+	else tentacles[1].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.D)) tentacles[2].update(true);
+	else tentacles[2].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.F)) tentacles[3].update(true);
+	else tentacles[3].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.G)) tentacles[4].update(true);
+	else tentacles[4].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.H)) tentacles[5].update(true);
+	else tentacles[5].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.J)) tentacles[6].update(true);
+	else tentacles[6].update(false)
+	if (game.input.keyboard.isDown(Phaser.Keyboard.K)) tentacles[7].update(true);
+	else tentacles[7].update(false)
+	
+	flautist.update();
+}
+
+function genSequence(length) {
+	var seq = [];
+	for(var i = 0; i < length; i++) {
+		seq.push(Math.round(Math.random() * 7));
+	}
+	return seq;
+}
+</script>
+
+</body>
+</html>
