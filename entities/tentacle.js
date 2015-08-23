@@ -6,6 +6,7 @@ function Tentacle(game, x, y, side, note) {
 	this.game = game;
 	this.side = side;
 	this.prevActive = false;
+	this.controlLabel;
 	
 	this.shown = false;
 	
@@ -22,6 +23,16 @@ function Tentacle(game, x, y, side, note) {
 	}
 	
 	this.r = this.game.add.rope(x, y, 'tentacle', null, this.points);
+	
+	var controls = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k'];
+	var textX = x + 250;
+	var textY = y;
+	if(this.side == 'right')
+		textX = x + 250;
+	if(this.side == 'left')
+		textY = y - 30;
+	
+	this.controlLabel = this.game.add.text(textX, textY, controls[this.note], {fill:'#DEE'});
 }
 
 Tentacle.prototype.update = function(active) {
@@ -38,6 +49,7 @@ Tentacle.prototype.update = function(active) {
 		    evilsounds[this.note].loopFull();
 		    playerSequence.push(this.note);
 		    console.log('playing note ' + this.note);
+		    if(this.controlLabel) this.controlLabel.visible = false;
 	    }
 	    else if(!evilsoundready) {
 		    alert('Error loading tentacle sounds.');
