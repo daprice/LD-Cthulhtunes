@@ -28,6 +28,13 @@ var mortalsoundready = false;
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
+	//from https://github.com/photonstorm/phaser/issues/1355
+	if (game.device.safari || game.device.mobileSafari) {
+	    Phaser.Loader.prototype.transformUrl = function (url) {
+	        return this.baseURL + url + '?cacheBust=' + Date.now();
+	    }
+	}
+	
 	game.load.image('tentacle', 'assets/straight tentacle.png');
 	game.load.image('bubble', 'assets/bubble.png');
 	game.load.spritesheet('mortal_flute', 'assets/mortal_flute.png', 90, 146);
