@@ -8,6 +8,8 @@ function GameProgression(game) {
 	this.recording = false;
 	this.firstTime = true;
 	this.gameReversed = false;
+	this.winText = this.game.add.text(200, 500, 'The ritual is complete. I follow you now, master.', {fill:'#DEE'});
+	this.winText.visible = false;
 }
 
 GameProgression.prototype.beginLevel = function(keepSequence) {
@@ -117,6 +119,10 @@ GameProgression.prototype.checkRecording = function() {
 		else { //if game is done
 			flautist.possess(true);
 			console.log('you are winner');
+			this.winText.visible = true;
+			//hide wintext in a few seconds
+			var winTimer = this.game.time.create(true);
+			winTimer.add(5000, function(){this.winText.visible = false;}, this);
 			this.gameReversed = true;
 			this.beginReversedLevel();
 		}
