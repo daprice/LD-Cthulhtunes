@@ -3,17 +3,98 @@
 <head> 
 	<meta charset="UTF-8" />
 	<title>TNTKL</title>
-    <script src="https://cdn.jsdelivr.net/phaser/2.4.2/phaser.min.js"></script>
+    <script src="//cdn.jsdelivr.net/phaser/2.4.2/phaser.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="entities/tentacle.js"></script>
     <script src="entities/mortal.js"></script>
     <script src="gameProgression.js"></script>
     <style type="text/css">
+	    @font-face {
+		    font-family: 'hartingplain';
+		    src: url('fonts/harting_plain_macroman/Harting_plain-webfont.eot');
+		    src: url('fonts/harting_plain_macroman/Harting_plain-webfont.eot?#iefix') format('embedded-opentype'),
+		         url('fonts/harting_plain_macroman/Harting_plain-webfont.woff') format('woff'),
+		         url('fonts/harting_plain_macroman/Harting_plain-webfont.ttf') format('truetype'),
+		         url('fonts/harting_plain_macroman/Harting_plain-webfont.svg#hartingplain') format('svg');
+		    font-weight: normal;
+		    font-style: normal;
+		
+		}
+		@font-face {
+		    font-family: 'uglyquaregular';
+		    src: url('fonts/uglyqua_regular_macroman/UglyQua-webfont.eot');
+		    src: url('fonts/uglyqua_regular_macroman/UglyQua-webfont.eot?#iefix') format('embedded-opentype'),
+		         url('fonts/uglyqua_regular_macroman/UglyQua-webfont.woff') format('woff'),
+		         url('fonts/uglyqua_regular_macroman/UglyQua-webfont.ttf') format('truetype'),
+		         url('fonts/uglyqua_regular_macroman/UglyQua-webfont.svg#uglyquaregular') format('svg');
+		    font-weight: normal;
+		    font-style: normal;
+		
+		}
+
         body {
             margin: 0;
+            background-color: #0d1415;
+            color: #DEE;
+            font-family: uglyquaregular, serif;
         }
+        h1, h2, h3 {
+	        text-align: center;
+	        font-family: hartingplain, monospace;
+    	}
+    	a {
+	    	color: #ACC;
+    	}
+    	p {
+	    	width: 40em;
+	    	margin: 1em auto;
+	    	font-size: 1.2em;
+    	}
+    	#game {
+	    	margin: 2em auto;
+    	}
+    	.start {
+	    	display: block;
+	    	width: 10em;
+	    	height: 2em;
+	    	margin: auto;
+	    	font-size: 2em;
+	        text-align: center;
+	        font-family: hartingplain, monospace;
+	    	color: white;
+	    	border-radius: 0.5em;
+	    	background: #027371;
+	    	background-image: -webkit-linear-gradient(#18c1d0 0%, #027371 100%);
+	    	background-image: -moz-linear-gradient(#18c1d0 0%, #027371 100%);
+	    	background-image: -o-linear-gradient(#18c1d0 0%, #027371 100%);
+	    	background-image: -ms-linear-gradient(#18c1d0 0%, #027371 100%);
+	    	background-image: linear-gradient(#18c1d0 0%, #027371 100%);
+	    	border: none;
+	    	border-bottom: 0.1em solid #656565;
+	    	cursor: pointer;
+    	}
+    	.start:hover, .start:focus {
+	    	position: relative;
+	    	top: -1px;
+	    	border-bottom-width: 0.2em;
+    	}
+    	.start:active {
+	    	position: relative;
+	    	top: 2px;
+	    	border-bottom-width: 0em;
+    	}
     </style>
 </head>
 <body>
+	<h1>Cthulh-tunes</h1>
+	<h2>Rip. Mix. Burn away mortal minds.</h2>
+	<h3>A Ludum Dare 33 entry by <a href="http://ludumdare.com/compo/author/dalep/">Dale Price</a></h3>
+	<div id="game" style="width:1000px; height:600px;"></div>
+	
+	<button class="start">Start Game</button>
+	
+	<p>Puny mortals know that the only way to appease the tentacled horror is to send a sacrifice to play it a song. The monster responds in kind, vibrating its tentacles to mimic the mortal's music. The ritual is complete when the mortal loses his mind from the sheer power of the monster's rendition of the song, and becomes its servant.</p>
+	<p>As the tentacled monstrosity, you can't let the mortals down by failing to reciprocate in the ritual. Copy the mortal sacrifice's constantly changing melodies to enslave his mind forever.</p>
 
 <script type="text/javascript">
 
@@ -25,7 +106,11 @@ var evilsounds;
 var mortalsounds;
 var evilsoundready = false;
 var mortalsoundready = false;
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = false;
+
+$( document ).ready(function() {
+    $('.start').click(function() {if(game == false) game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });});
+});
 
 function preload() {
 	//from https://github.com/photonstorm/phaser/issues/1355
