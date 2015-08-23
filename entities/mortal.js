@@ -91,6 +91,9 @@ Mortal.prototype.update = function() {
 };
 
 Mortal.prototype.possess = function(stay) {
-	if(stay) this.s.animations.play('possess');
+	if(stay) {
+		this.s.animations.play('possess');
+		this.status = '_possessed';
+	}
 	else this.s.animations.play('possess_fail');
 }

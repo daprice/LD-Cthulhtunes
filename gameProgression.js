@@ -7,6 +7,7 @@ function GameProgression(game) {
 	this.recordingTimer;
 	this.recording = false;
 	this.firstTime = true;
+	this.gameReversed = false;
 }
 
 GameProgression.prototype.beginLevel = function(keepSequence) {
@@ -24,7 +25,7 @@ GameProgression.prototype.beginLevel = function(keepSequence) {
 	this.timer.add(800 + (this.level-1)*1000, this.startRecording, this);
 	
 	//check player after giving them time to play
-	this.recordingTimer = this.timer.add(800 + (this.level-1)*1000 + 3000, this.checkRecording, this, false);
+	this.recordingTimer = this.timer.add(800 + (this.level-1)*1000 + 3000, this.checkRecording, this);
 	
 	if(this.firstTime) { //if first time, wait for flautist to walk into position
 		this.timer.start(5000);
@@ -36,6 +37,18 @@ GameProgression.prototype.beginLevel = function(keepSequence) {
 	else { //if not repeating the same level, leave time for the success animation
 		this.timer.start(2000);
 	}
+};
+
+GameProgression.prototype.beginReversedLevel = function() {
+	this.timer = this.game.time.create(true);
+	this.currentPosition = 0;
+	this.currentSequence = [];
+	
+	console.log('starting reversed level');
+	
+	this.startRecording();
+	
+	this.timer.start();
 };
 
 GameProgression.prototype.playNote = function() {
@@ -55,12 +68,17 @@ GameProgression.prototype.startRecording = function() {
 
 GameProgression.prototype.resetRecordingTimer = function() {
 	if(this.recording) {
-		this.timer.remove(this.recordingTimer);
+		if(this.recordingTimer) this.timer.remove(this.recordingTimer);
 		this.recordingTimer = this.timer.add(2000, this.checkRecording, this);
 	}
 };
 
 GameProgression.prototype.checkRecording = function() {
+	if(this.gameReversed) {
+		this.handleReversedRecording();
+		return;
+	}
+	
 	this.recording = false;
 	console.log('checking player\'s recording');
 	console.log('player: ' + playerSequence);
@@ -99,9 +117,26 @@ GameProgression.prototype.checkRecording = function() {
 		else { //if game is done
 			flautist.possess(true);
 			console.log('you are winner');
+			this.gameReversed = true;
+			this.beginReversedLevel();
 		}
 	}
 	else { //replay current level
 		this.beginLevel(true);
 	}
-}
+};
+
+GameProgression.prototype.handleReversedRecording = function() {
+	this.recording = false;
+	for(var n in playerSequence) {
+		this.currentSequence.push(playerSequence[n]);
+	}
+	playerSequence = [];
+	console.log('fluting back player\'s recording: ' + this.currentSequence);
+	
+	for(var i = 0; i < this.currentSequence.length; i++) {
+		this.timer.add(i * 1000, this.playNote, this);
+	}
+	
+	this.timer.add(this.currentSequence.length * 1000, this.beginReversedLevel, this);
+};
