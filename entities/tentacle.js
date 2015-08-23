@@ -39,6 +39,8 @@ Tentacle.prototype.update = function(active) {
 		    playerSequence.push(this.note);
 		    console.log('playing note ' + this.note);
 	    }
+		
+		gameProgression.resetRecordingTimer();
 	    
 	    this.prevActive = true;
 	}

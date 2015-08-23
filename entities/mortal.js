@@ -6,7 +6,7 @@ function Mortal(game, x, y, instrument) {
 	this.currentNote = 0;
 	
 	this.walkTarget = {x: x, y: y};
-	this.walkSpeed = 1;
+	this.walkSpeed = 3;
 	this.walking = false;
 	
 	this.s = this.game.add.sprite(x, y, 'mortal_'+instrument);
