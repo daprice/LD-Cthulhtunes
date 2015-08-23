@@ -3,7 +3,7 @@
 <head> 
 	<meta charset="UTF-8" />
 	<title>TNTKL</title>
-    <script src="//cdn.jsdelivr.net/phaser/2.4.2/phaser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/phaser/2.4.2/phaser.min.js"></script>
     <script src="entities/tentacle.js"></script>
     <script src="entities/mortal.js"></script>
     <script src="gameProgression.js"></script>
@@ -37,6 +37,7 @@ function preload() {
 	
 	game.load.image('tentacle', 'assets/straight tentacle.png');
 	game.load.image('bubble', 'assets/bubble.png');
+	game.load.image('background', 'assets/background.png');
 	game.load.spritesheet('mortal_flute', 'assets/mortal_flute.png', 90, 146);
 	
 	game.load.audio('evil c', 'assets/notes/evil c.mp3');
@@ -59,6 +60,8 @@ function preload() {
 }
 
 function create() {
+	game.add.sprite(0, 0, 'background');
+	
 	//create left side tentacles
 	for(var i = 0; i < 4; i++) {
 		tentacles.push(new Tentacle(game, 0, i * 100 + 100, 'left', i));
