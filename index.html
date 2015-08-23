@@ -89,9 +89,9 @@
 	<h1>Cthulhtunes</h1>
 	<h2>Rip. Mix. Burn away mortal minds.</h2>
 	<h3>A Ludum Dare 33 entry by <a href="http://ludumdare.com/compo/author/dalep/">Dale Price</a></h3>
-	<div id="game" style="width:1000px;"></div>
 	
 	<button class="start">Start Game</button>
+	<div id="game" style="width:1000px;"></div>
 	
 	<p>Puny mortals know that the only way to appease the tentacled horror is to send a sacrifice to play it a song. The monster responds in kind, vibrating its tentacles to mimic the mortal's music. The ritual is complete when the mortal loses his mind from the sheer power of the monster's rendition of the song, and becomes its servant.</p>
 	<p>As the tentacled monstrosity, you can't let the mortals down by failing to reciprocate in the ritual. Copy the mortal sacrifice's constantly changing melodies to enslave his mind forever.</p>
@@ -192,12 +192,15 @@ function create() {
 
 function startEvil() {
 	evilsoundready = true;
+		if(mortalsoundready)
+			gameProgression.beginLevel(false);
 }
 
 function startMortal() {
 	mortalsoundready = true;
 	
-	gameProgression.beginLevel(false);
+	if(evilsoundready)
+		gameProgression.beginLevel(false);
 }
 
 function update() {

@@ -39,6 +39,9 @@ Tentacle.prototype.update = function(active) {
 		    playerSequence.push(this.note);
 		    console.log('playing note ' + this.note);
 	    }
+	    else if(!evilsoundready) {
+		    alert('Error loading tentacle sounds.');
+	    }
 		
 		gameProgression.resetRecordingTimer();
 	    
